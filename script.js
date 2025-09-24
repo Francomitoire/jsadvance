@@ -30,3 +30,11 @@ vehiculo1.acelerar(70);
 console.log(vehiculo1.velocidadActual);
 vehiculo1.detener();
 console.log(vehiculo1.velocidadActual);
+
+vehiculo.prototype.mostrarInfo = function () {
+  console.log(
+    `Marca: ${this.marca}, Modelo: ${this.modelo}, Velocidad maxima ${this.velocidadMaxima}`
+  );
+};
+
+vehiculo1.mostrarInfo();
