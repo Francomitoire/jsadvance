@@ -20,3 +20,11 @@ Auto.prototype.abrirPuertas = function (){
 
 const toyota = new Auto("Toyota", "1234", 120, true)
 toyota.abrirPuertas()
+
+const autoToyota = new Auto("Toyota", "1234", 120, true)
+const autoBMW = new Auto("BMW", "345", 180, false)
+
+autoBMW.compararVelocidad(autoToyota)
+
+autoToyota.abrirPuertas()
+autoBMW.abrirPuertas()
