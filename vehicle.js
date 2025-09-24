@@ -5,23 +5,26 @@ export function Vehicle(marca, modelo, velocidadMaxima) {
     vehicle.marca = marca
     vehicle.modelo = modelo
     vehicle.velocidadMaxima = velocidadMaxima
-    
+    vehicle.velocidad = 0
+
     return vehicle
 }
 //Acelera 10km/h
-Vehicle.prototype.acelerar = function (velocidad){
-    if(velocidad === Number(velocidad)){
-        if(this.velocidadMaxima > (velocidad + 10)){
-            console.log("Has llegado a la velocidad maxima.\nVelocidad: 120km/h")
+Vehicle.prototype.acelerar = function (nuevaVelocidad){
+    if(typeof nuevaVelocidad === "number"){
+        if(nuevaVelocidad >= this.velocidadMaxima){
+            this.velocidad = this.velocidadMaxima
+            console.log(`Has llegado a la velocidad maxima.\nVelocidad: ${this.velocidad}km/h`)
         }else{
-            velocidad += 10
-            console.log(`Estas yendo a ${velocidad}km/h`)
+            this.velocidad = nuevaVelocidad
+            console.log(`Estas yendo a ${nuevaVelocidad}km/h`)
         }
     }else{
-        console.log(`Se ha recibido un parametro incorrecto\nParametro recibiDo: ${typeof velocidad}`)
+        console.log(`Se ha recibido un parametro incorrecto\nParametro recibiDo: ${typeof nuevaVelocidad}`)
     }
 }
-Vehicle.prototype.detener = function(){
+Vehicle.prototype.detener = function(velocidad){
+    this.velocidad = 0
     console.log("El vehiculo se ha detenido")
 }
 
@@ -30,4 +33,3 @@ Vehicle.prototype.mostrarInfo = function(){
         console.log(`${key.charAt(0).toLocaleUpperCase() + key.slice(1)}: ${value}`);
     });
 }
-
