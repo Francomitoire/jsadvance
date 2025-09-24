@@ -22,6 +22,20 @@ Moto.prototype.verificarSiTieneSidecar = function(){
 const motoToyota = new Moto("Toyota", "1234", 150, false)
 const motoBMW = new Moto("BMW", "345", 200, true)
 
+
+//Tests
+console.log("Test de comparacion de velocidad")
 motoBMW.compararVelocidad(motoToyota)
 
+console.log("\nTest de verificacion de sidecar")
 motoBMW.verificarSiTieneSidecar()
+motoToyota.verificarSiTieneSidecar()
+
+console.log("\nTest de acelerar")
+motoBMW.acelerar(40)
+
+console.log()
+motoBMW.detener("\nTest de detener")
+
+console.log()
+motoBMW.mostrarInfo("\nTest de mostrar informacion")

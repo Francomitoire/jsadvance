@@ -24,7 +24,19 @@ toyota.abrirPuertas()
 const autoToyota = new Auto("Toyota", "1234", 120, true)
 const autoBMW = new Auto("BMW", "345", 180, false)
 
+//Tests
+console.log("Test de comparacion de velocidad")
 autoBMW.compararVelocidad(autoToyota)
 
+console.log("\nTest de abrir puertas")
 autoToyota.abrirPuertas()
 autoBMW.abrirPuertas()
+
+console.log("\nTest de acelerar")
+autoBMW.acelerar(40)
+
+console.log("\nTest de detener")
+autoBMW.detener()
+
+console.log("\nTest de mostrar informacion")
+autoBMW.mostrarInfo()
