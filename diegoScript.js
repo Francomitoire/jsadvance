@@ -32,8 +32,8 @@ console.log(miCoche.informacion());
 
 class Car extends Vehicle {
   constructor(marca, modelo, velocidad, velocidadMaxima, openDoor) {
-    this.openDoor = openDoor;
     super(marca, modelo, velocidad, velocidadMaxima);
+    this.openDoor = openDoor;
   }
 }
 
