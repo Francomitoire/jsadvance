@@ -1,4 +1,4 @@
-function Vehicle(marca, modelo, velocidadMaxima) {
+export function Vehicle(marca, modelo, velocidadMaxima) {
 
     const vehicle = Object.create(Vehicle.prototype)
     
@@ -31,12 +31,3 @@ Vehicle.prototype.mostrarInfo = function(){
     });
 }
 
-const autoToyota = new Vehicle("Toyota", "1234" , 120)
-autoToyota.acelerar(60)
-autoToyota.detener()
-autoToyota.mostrarInfo()
-
-const motoBMW = new Vehicle("BMW", "GM2DEV" , 160)
-motoBMW.acelerar(60)
-motoBMW.detener()
-motoBMW.mostrarInfo()
