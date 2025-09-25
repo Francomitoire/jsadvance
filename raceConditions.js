@@ -18,9 +18,7 @@ function sellTicket(requests) {
   }
 }
 
-console.log("1", ticketsSold);
-console.log("2", tickets);
-sellTicket(3); //3 tickets solicitados
-console.log("3", ticketsSold);
-console.log("4", tickets);
-//
+// tiempo de espera random
+function randomTime() {
+  return Math.floor(Math.random() * 5000);
+}
