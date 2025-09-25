@@ -113,17 +113,25 @@ comprarEntradas({ nombre: "Sofía", entradas: 2 });
 // peticiones de entradas
 // precesar/disminuir, validar
 //una fila de peticiones
-
+let entradasSolicitadas = 1;
 let queue = [];
 let entradasDisponibles = 10;
-function validarEntradas() {
+function validarEntradas(entradasSolicitadas) {
   if (typeof entradasSolicitadas === "number") {
-    console.log("Numero validado");
+    console.log("Numero valido");
   } else if (entradasSolicitadas !== "number") {
     console.log("Numero invalido");
+    return false;
   }
   if (entradasSolicitadas >= 0) console.log("Entrada validada");
+  return true;
 }
+function queueRequest() {
+  if (!validarEntradas(entradasSolicitadas)) return;
+  queue.push(entradasSolicitadas);
+}
+queueRequest();
+console.log(queue);
 
 // ALEX WORK
 // DIEGO WORK
