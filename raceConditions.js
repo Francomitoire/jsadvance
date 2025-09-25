@@ -42,6 +42,15 @@ async function procesarCola() {
     }
 }
 
+function comprarEntradas(usuario) {
+    if (!validarUsuario(usuario)) {
+        console.log("❌ Usuario inválido, compra rechazada");
+        return;
+    }
+    colaDeCompra.push({ nombre: usuario.nombre, entradas: usuario.entradas, ts: Date.now() });
+    setTimeout(procesarCola, Math.random() * 1500); 
+}
+
 // IVAN WORK
 // ALEX WORK
 // DIEGO WORK
