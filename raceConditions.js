@@ -113,25 +113,59 @@ comprarEntradas({ nombre: "Sofía", entradas: 2 });
 // peticiones de entradas
 // precesar/disminuir, validar
 //una fila de peticiones
-let entradasSolicitadas = 1;
+
+const comprador = { nombre: "Roberto", entradas: 8 };
+
 let queue = [];
 let entradasDisponibles = 10;
-function validarEntradas(entradasSolicitadas) {
-  if (typeof entradasSolicitadas === "number") {
-    console.log("Numero valido");
-  } else if (entradasSolicitadas !== "number") {
-    console.log("Numero invalido");
+
+function validarUsuario(usuarioAValidar) {
+  if (typeof usuarioAValidar === "string") {
+    console.log("Usuario válido");
+    return true;
+  } else {
+    console.log("Usuario inválido");
     return false;
   }
-  if (entradasSolicitadas >= 0) console.log("Entrada validada");
+}
+
+function validarEntradas(entradaAValidar) {
+  if (typeof entradaAValidar === "number" && entradaAValidar >= 0) {
+    console.log("Número válido");
+    return true;
+  } else {
+    console.log("Número inválido");
+    return false;
+  }
+}
+
+function queueRequest() {
+  if (
+    !validarEntradas(comprador.entradas) ||
+    !validarUsuario(comprador.nombre)
+  ) {
+    return false;
+  }
+
+  queue.push(comprador);
   return true;
 }
-function queueRequest() {
-  if (!validarEntradas(entradasSolicitadas)) return;
-  queue.push(entradasSolicitadas);
+
+function comprarEntrada() {
+  if (!queueRequest()) return;
+
+  if (comprador.entradas <= entradasDisponibles) {
+    console.log("Gracias por la compra");
+    entradasDisponibles -= comprador.entradas;
+  } else {
+    console.log("Stock no disponible");
+  }
 }
-queueRequest();
-console.log(queue);
+
+console.log("Cola inicial:", queue);
+comprarEntrada();
+console.log("Cola final:", queue);
+console.log("Entradas restantes:", entradasDisponibles);
 
 // ALEX WORK
 // DIEGO WORK
