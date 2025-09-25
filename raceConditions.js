@@ -51,6 +51,16 @@ function comprarEntradas(usuario) {
     setTimeout(procesarCola, Math.random() * 1500); 
 }
 
+comprarEntradas({ nombre: "David", entradas: 4 });
+comprarEntradas({ nombre: "Ana", entradas: 3 });
+comprarEntradas({ nombre: "Luis", entradas: 5 });
+comprarEntradas({ nombre: "Sofía", entradas: 2 });
+comprarEntradas({ nombre: "David", entradas: 4 });
+comprarEntradas({ nombre: "Ana", entradas: 3 });
+comprarEntradas({ nombre: "Luis", entradas: 1 });
+comprarEntradas({ nombre: "Sofía", entradas: 2 });
+
+
 // IVAN WORK
 // ALEX WORK
 // DIEGO WORK
