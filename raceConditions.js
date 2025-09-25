@@ -108,6 +108,23 @@ comprarEntradas({ nombre: "Sofía", entradas: 2 });
 
 
 // IVAN WORK
+
+// n entradas
+// peticiones de entradas
+// precesar/disminuir, validar
+//una fila de peticiones
+
+let queue = [];
+let entradasDisponibles = 10;
+function validarEntradas() {
+  if (typeof entradasSolicitadas === "number") {
+    console.log("Numero validado");
+  } else if (entradasSolicitadas !== "number") {
+    console.log("Numero invalido");
+  }
+  if (entradasSolicitadas >= 0) console.log("Entrada validada");
+}
+
 // ALEX WORK
 // DIEGO WORK
 
