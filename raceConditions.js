@@ -93,7 +93,7 @@ function comprarEntradas(usuario) {
         console.log("❌ Usuario inválido, compra rechazada");
         return;
     }
-    colaDeCompra.push({ nombre: usuario.nombre, entradas: usuario.entradas, ts: Date.now() });
+    colaDeCompra.push({ nombre: usuario.nombre, entradas: usuario.entradas});
     setTimeout(procesarCola, Math.random() * 1500); 
 }
 
