@@ -4,7 +4,7 @@ function runSimulation(){
     const entradas = []
     const tickets = []
     for(let i = 1; i <= 15; i++){
-        usuarios.push(`usuario${i}`)
+        usuarios.push(`ususario${i}`)
         if(i<=10){
             entradas.push(`entrada${i}`)
         }
@@ -29,6 +29,16 @@ function runSimulation(){
                         reject(`Lo siento ${usuario}, se han acabado las entradas`)
                     }
                 }, Math.random() * 5000)
+            })
+        })
+        promesasEntradas.forEach((promesa)=>{
+            promesa
+            .then((ticket)=>{
+                tickets.push(ticket)
+                console.log(ticket)
+            })
+            .catch((errorMsg)=>{
+                console.log(errorMsg)
             })
         })
     }
