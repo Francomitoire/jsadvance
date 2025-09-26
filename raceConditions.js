@@ -55,7 +55,13 @@ function runSimulation(){
             })
         })
     }
-
+    /**
+     * @param {*} usuario pide el usuario que no pudo comprar suficientes entradas (type of data: string)
+     * @param {*} ticket pide el ticket (el usuario y la lista de entradas que saco)  (type of data: object) 
+     * @param {*} cantidadEntradas pide la cantidad de entradas que saco el usuario (type of data: integer)
+     * @param {*} resolve pide el parametro de resolver la promesa (la promesa resuelve el ticket con el usuario y la lista de entradas que saco)
+     * @param {*} reject pide el parametro de rechazar la promesa(la promesa rechaza en caso de que no haya entradas o el usuario desea comprar mas entradas de las que hay en stock y no acepta la opcion de comprar menos entradas)
+     */
     function permitirCompraEntradasRestantes(usuario, ticket, cantidadEntradas, resolve, reject){
         do{
             try{
