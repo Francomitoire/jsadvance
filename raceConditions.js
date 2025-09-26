@@ -81,6 +81,7 @@ async function procesarCola() {
             } catch (error) {
                 console.log(`❌ ${uProcesar.nombre} no pudo comprar: ${error.message}. Restan: ${Stock.get()}`);
             }
+            //cuando se crea-resuelve una nueva promesa le das espacio a actualizar al event loop, lo que permite tener un flujo continuo de datos, y no por paquetes.
             await Promise.resolve();
         }
     } finally {
@@ -94,17 +95,19 @@ function comprarEntradas(usuario) {
         return;
     }
     colaDeCompra.push({ nombre: usuario.nombre, entradas: usuario.entradas});
-    setTimeout(procesarCola, Math.random() * 1500); 
+    setTimeout(procesarCola, Math.random() *2000);
 }
 
-comprarEntradas({ nombre: "David", entradas: 4 });
-comprarEntradas({ nombre: "Ana", entradas: 3 });
-comprarEntradas({ nombre: "Luis", entradas: 5 });
-comprarEntradas({ nombre: "Sofía", entradas: 2 });
-comprarEntradas({ nombre: "David", entradas: 4 });
-comprarEntradas({ nombre: "Ana", entradas: 3 });
-comprarEntradas({ nombre: "Luis", entradas: 1 });
-comprarEntradas({ nombre: "Sofía", entradas: 2 });
+function startSimulator() {
+    comprarEntradas({ nombre: "David", entradas: 4 });
+    comprarEntradas({ nombre: "Ana", entradas: 3 });
+    comprarEntradas({ nombre: "Luis", entradas: 5 });
+    comprarEntradas({ nombre: "Sofía", entradas: 2 });
+    comprarEntradas({ nombre: "David", entradas: 4 });
+    comprarEntradas({ nombre: "Ana", entradas: 3 });
+    comprarEntradas({ nombre: "Luis", entradas: 1 });
+    comprarEntradas({ nombre: "Sofía", entradas: 2 });
+}
 
 
 // IVAN WORK
