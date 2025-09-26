@@ -47,26 +47,49 @@ function runSimulation(){
 runSimulation()
 // DAVID WORK
 
+/**
+ * Representa el stock de entradas disponibles. Incluye métodos para obtener y disminuir el stock.
+ * @namespace Stock
+ */
+
 const Stock = {
+    /**
+     * Número actual de entradas disponibles.
+     * @type {number}
+     */
     disponibles: 10,
+    /**
+     * Obtiene el número de entradas disponibles.
+     * @returns {number} El número de entradas disponibles.
+     */
     get() {
         return this.disponibles;
     },
+    /**
+     * Disminuye el número de entradas disponibles.
+     * @param {number} cantidad - La cantidad de entradas a disminuir.
+     */
     disminuir(cantidad) {
         if (!Number.isInteger(cantidad) || cantidad <= 0) throw new Error("Cantidad inválida");
         if (cantidad > this.disponibles) throw new Error("Stock insuficiente");
+        if (cantidad > 6) throw new Error("No se pueden comprar más de 6 entradas a la vez");
         this.disponibles -= cantidad;
     }
 };
 
+/**
+ * Cola de compra para gestionar las peticiones de entradas.
+ * @type {Array}
+ */
+
 const colaDeCompra = [];
 let processing = false; 
 
+
 function validarUsuario(usuario) {
-    if (!usuario || typeof usuario !== "object") return false;
-    if (typeof usuario.nombre !== "string" || usuario.nombre.trim() === "") return false;
-    if (!Number.isInteger(usuario.entradas) || usuario.entradas <= 0) return false;
-    if (usuario.entradas > 6) throw new Error("El maxima es 6");
+    if (!usuario || typeof usuario !== "object") throw new Error("Usuario inválido");
+    if (typeof usuario.nombre !== "string" || usuario.nombre.trim() === "") throw new Error("Nombre inválido");
+    if (!Number.isInteger(usuario.entradas) || usuario.entradas <= 0) throw new Error("Entradas inválidas");
     return true;
 }
 
@@ -86,18 +109,23 @@ async function procesarCola() {
             //cuando se crea-resuelve una nueva promesa le das espacio a actualizar al event loop, lo que permite tener un flujo continuo de datos, y no por paquetes.
             await Promise.resolve();
         }
+    } catch (error) {
+        console.error("Error procesando la cola:", error);
+        return;
     } finally {
         processing = false;
     }
 }
 
 function comprarEntradas(usuario) {
-    if (!validarUsuario(usuario)) {
-        console.log("❌ Usuario inválido, compra rechazada");
+    try {
+        validarUsuario(usuario);
+    } catch (error) {
+        console.log("❌ Compra rechazada", "Error:", error.message);
         return;
     }
-    colaDeCompra.push({ nombre: usuario.nombre, entradas: usuario.entradas});
-    setTimeout(procesarCola, Math.random() *2000);
+    colaDeCompra.push({ nombre: usuario.nombre, entradas: usuario.entradas });
+    setTimeout(procesarCola, Math.random() * 2000);
 }
 
 const delay = ms => new Promise(r => setTimeout(r, ms));
@@ -106,7 +134,7 @@ function simularLlegadas(usuarios) {
 // lanza todos los timers en paralelo; cada uno llega tras su delay aleatorio
     return Promise.all(
         usuarios.map(async u => {
-            await delay(200 + Math.random() * 2500);
+            await delay(700 + Math.random() * 2000);
             comprarEntradas(u);
         })
     );
@@ -114,14 +142,21 @@ function simularLlegadas(usuarios) {
 
 async function startSimulator() {
     const usuarios = [
-    { nombre: "David", entradas: 4 },
-    { nombre: "Ana", entradas: 3 },
-    { nombre: "Luis", entradas: 5 },
-    { nombre: "Sofía", entradas: 2 },
-    { nombre: "David", entradas: 4 },
-    { nombre: "Ana", entradas: 3 },
-    { nombre: "Luis", entradas: 1 },
-    { nombre: "Sofía", entradas: 2 }
+        { nombre: "Ana", entradas: 2 },
+        { nombre: "Luis", entradas: 1 },
+        { nombre: "Pedro", entradas: 3 },
+        { nombre: "María", entradas: 4 },
+        { nombre: "Juan", entradas: 2 },
+        { nombre: "Lucía", entradas: 5 },
+        { nombre: "Carlos", entradas: 1 },
+        { nombre: "Marta", entradas: 2 },
+        { nombre: "Jorge", entradas: 6 },
+        { nombre: "Sofía", entradas: 3 },
+        { nombre: "InvalidUser1", entradas: -1 }, // inválido
+        { nombre: "", entradas: 2 },               // inválido
+        { nombre: "InvalidUser2", entradas: 0 },   // inválido
+        { nombre: "InvalidUser3", entradas: 10 },  // inválido (más de 6)
+        { nombre: "InvalidUser4", entradas: "two" } // inválido
     ];
 
     await simularLlegadas(usuarios);
