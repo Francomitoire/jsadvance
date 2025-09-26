@@ -1,5 +1,10 @@
 import promptSync from 'prompt-sync';
 const prompt = promptSync();
+/**
+ * @return this function runs the simulation and returns the value 
+ * 
+ */
+
 // MATI WORK
 function runSimulation(){
     const usuarios = []
@@ -23,32 +28,15 @@ function runSimulation(){
                             entradasUsuario : []
                         }
                         if(entradas.length!== 0){
-                            if(cantidadEntradas <= entradas.length){
+                            if(cantidadEntradas <= entradas.length){ 
                                 for(let i = 0; i < cantidadEntradas; i++){
                                     ticket.entradasUsuario.push(entradas.shift())
                                 }
+
                                 resolve(ticket)
+
                             }else{
-                                do{
-                                    try{
-                                        console.log(`Lo siento ${usuario}, no hay suficientes entradas. Si desea comprar entradas igualmente, ingrese cuántas entradas desea comprar. Si no desea comprar ninguna entrada, ingrese 0.`);
-                                        comprarEntradasRestantes = Number(prompt(`(${entradas.length} entradas restantes): `))
-                                        if(comprarEntradasRestantes % 1 !== 0 || comprarEntradasRestantes < 0){
-                                            console.log(`El sistema solo permiten numeros positivos enteros`)
-                                        }
-                                    }catch(error){
-                                        console.log("El sistema solo permite numeros")
-                                    }
-                                }while(typeof comprarEntradasRestantes !== "number" || comprarEntradasRestantes % 1 !== 0 || comprarEntradasRestantes > entradas.length)
-                                cantidadEntradas = comprarEntradasRestantes
-                                if(cantidadEntradas !== 0){
-                                    for(let i = 0; i < cantidadEntradas; i++){
-                                        ticket.entradasUsuario.push(entradas.shift())
-                                    }
-                                    resolve(ticket)
-                                }else{
-                                    reject("Muchas gracias por la visita.")
-                                }
+                                permitirCompraEntradasRestantes(usuario, ticket, cantidadEntradas, resolve, reject)
                             }
                         }else{
                             reject(`Lo siento ${usuario}, no quedan entradas`)
@@ -66,6 +54,29 @@ function runSimulation(){
                 console.log(errorMsg)
             })
         })
+    }
+
+    function permitirCompraEntradasRestantes(usuario, ticket, cantidadEntradas, resolve, reject){
+        do{
+            try{
+                console.log(`Lo siento ${usuario}, no hay suficientes entradas. Si desea comprar entradas igualmente, ingrese cuántas entradas desea comprar. Si no desea comprar ninguna entrada, ingrese 0.`);
+                comprarEntradasRestantes = Number(prompt(`(${entradas.length} entradas restantes): `))
+                if(comprarEntradasRestantes % 1 !== 0 || comprarEntradasRestantes < 0){
+                    console.log(`El sistema solo permiten numeros positivos enteros`)
+                }
+            }catch(error){
+                console.log("El sistema solo permite numeros")
+            }
+        }while(typeof comprarEntradasRestantes !== "number" || comprarEntradasRestantes % 1 !== 0 || comprarEntradasRestantes > entradas.length)
+        cantidadEntradas = comprarEntradasRestantes
+        if(cantidadEntradas !== 0){
+            for(let i = 0; i < cantidadEntradas; i++){
+                ticket.entradasUsuario.push(entradas.shift())
+            }
+            resolve(ticket)
+        }else{
+            reject("Muchas gracias por la visita.")
+        }
     }
         sacarEntradas()
 }
@@ -152,7 +163,7 @@ async function startSimulator() {
     await simularLlegadas(usuarios);
 }
 
-startSimulator();
+// startSimulator();
 
 
 // IVAN WORK
@@ -167,93 +178,93 @@ const comprador = { nombre: "Roberto", entradas: 8 };
 let queue = [];
 let entradasDisponibles = 10;
 
-function validarUsuario(usuarioAValidar) {
-  if (typeof usuarioAValidar === "string") {
-    console.log("Usuario válido");
-    return true;
-  } else {
-    console.log("Usuario inválido");
-    return false;
-  }
-}
+// function validarUsuario(usuarioAValidar) {
+//   if (typeof usuarioAValidar === "string") {
+//     console.log("Usuario válido");
+//     return true;
+//   } else {
+//     console.log("Usuario inválido");
+//     return false;
+//   }
+// }
 
-function validarEntradas(entradaAValidar) {
-  if (typeof entradaAValidar === "number" && entradaAValidar >= 0) {
-    console.log("Número válido");
-    return true;
-  } else {
-    console.log("Número inválido");
-    return false;
-  }
-}
+// function validarEntradas(entradaAValidar) {
+//   if (typeof entradaAValidar === "number" && entradaAValidar >= 0) {
+//     console.log("Número válido");
+//     return true;
+//   } else {
+//     console.log("Número inválido");
+//     return false;
+//   }
+// }
 
-function queueRequest() {
-  if (
-    !validarEntradas(comprador.entradas) ||
-    !validarUsuario(comprador.nombre)
-  ) {
-    return false;
-  }
+// function queueRequest() {
+//   if (
+//     !validarEntradas(comprador.entradas) ||
+//     !validarUsuario(comprador.nombre)
+//   ) {
+//     return false;
+//   }
 
-  queue.push(comprador);
-  return true;
-}
+//   queue.push(comprador);
+//   return true;
+// }
 
-function comprarEntrada() {
-  if (!queueRequest()) return;
+// function comprarEntrada() {
+//   if (!queueRequest()) return;
 
-  if (comprador.entradas <= entradasDisponibles) {
-    console.log("Gracias por la compra");
-    entradasDisponibles -= comprador.entradas;
-  } else {
-    console.log("Stock no disponible");
-  }
-}
+//   if (comprador.entradas <= entradasDisponibles) {
+//     console.log("Gracias por la compra");
+//     entradasDisponibles -= comprador.entradas;
+//   } else {
+//     console.log("Stock no disponible");
+//   }
+// }
 
-console.log("Cola inicial:", queue);
-comprarEntrada();
-console.log("Cola final:", queue);
-console.log("Entradas restantes:", entradasDisponibles);
+// console.log("Cola inicial:", queue);
+// comprarEntrada();
+// console.log("Cola final:", queue);
+// console.log("Entradas restantes:", entradasDisponibles);
 
-// ALEX WORK
-// DIEGO WORK
+// // ALEX WORK
+// // DIEGO WORK
 
-let basededatos = []; //base de datos simulada
-let tickets = 10; //tickets disponibles
-let requests = 0; //tickets solicitados
-let ticketsSold = 0; //tickets vendidos
-let fila = Promise.resolve(); //fila de promesas
+// let basededatos = []; //base de datos simulada
+// let tickets = 10; //tickets disponibles
+// let requests = 0; //tickets solicitados
+// let ticketsSold = 0; //tickets vendidos
+// let fila = Promise.resolve(); //fila de promesas
 
-//funcion para vender tickets
-function sellTicket(name, requests) {
-  return new Promise((resolve) => {
-    if (requests <= tickets) {
-      ticketsSold += requests;
-      tickets -= requests;
-      basededatos.push({ name, requests });
-      console.log(`${name} compró ${requests} ticket(s).`);
-    } else {
-      console.log(
-        `${name} quiso comprar ${requests}, pero no hay suficientes tickets.`
-      );
-    }
-    resolve();
-  });
-}
+// //funcion para vender tickets
+// function sellTicket(name, requests) {
+//   return new Promise((resolve) => {
+//     if (requests <= tickets) {
+//       ticketsSold += requests;
+//       tickets -= requests;
+//       basededatos.push({ name, requests });
+//       console.log(`${name} compró ${requests} ticket(s).`);
+//     } else {
+//       console.log(
+//         `${name} quiso comprar ${requests}, pero no hay suficientes tickets.`
+//       );
+//     }
+//     resolve();
+//   });
+// }
 
-// tiempo de espera random
-function randomTime() {
-  return Math.floor(Math.random() * 5000);
-}
+// // tiempo de espera random
+// function randomTime() {
+//   return Math.floor(Math.random() * 5000);
+// }
 
-// simulacion de varios usuarios intentando comprar tickets al mismo tiempo
-function transactionByUser(name, requests) {
-  setTimeout(() => {
-    fila = fila.then(() => sellTicket(name, requests));
-  }, randomTime());
-}
+// // simulacion de varios usuarios intentando comprar tickets al mismo tiempo
+// function transactionByUser(name, requests) {
+//   setTimeout(() => {
+//     fila = fila.then(() => sellTicket(name, requests));
+//   }, randomTime());
+// }
 
-transactionByUser("Juan Frank", 3);
-transactionByUser("Alex", 6);
-transactionByUser("Korsu", 1);
-transactionByUser("Franco", 3);
+// transactionByUser("Juan Frank", 3);
+// transactionByUser("Alex", 6);
+// transactionByUser("Korsu", 1);
+// transactionByUser("Franco", 3);
