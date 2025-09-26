@@ -74,7 +74,9 @@ runSimulation()
 
 const Stock = {
     disponibles: 10,
-    get() { return this.disponibles; },
+    get() {
+        return this.disponibles;
+    },
     disminuir(cantidad) {
         if (!Number.isInteger(cantidad) || cantidad <= 0) throw new Error("Cantidad inválida");
         if (cantidad > this.disponibles) throw new Error("Stock insuficiente");
@@ -106,6 +108,7 @@ async function procesarCola() {
             } catch (error) {
                 console.log(`❌ ${uProcesar.nombre} no pudo comprar: ${error.message}. Restan: ${Stock.get()}`);
             }
+            //cuando se crea-resuelve una nueva promesa le das espacio a actualizar al event loop, lo que permite tener un flujo continuo de datos, y no por paquetes.
             await Promise.resolve();
         }
     } finally {
@@ -118,21 +121,100 @@ function comprarEntradas(usuario) {
         console.log("❌ Usuario inválido, compra rechazada");
         return;
     }
-    colaDeCompra.push({ nombre: usuario.nombre, entradas: usuario.entradas, ts: Date.now() });
-    setTimeout(procesarCola, Math.random() * 1500); 
+    colaDeCompra.push({ nombre: usuario.nombre, entradas: usuario.entradas});
+    setTimeout(procesarCola, Math.random() *2000);
 }
 
-comprarEntradas({ nombre: "David", entradas: 4 });
-comprarEntradas({ nombre: "Ana", entradas: 3 });
-comprarEntradas({ nombre: "Luis", entradas: 5 });
-comprarEntradas({ nombre: "Sofía", entradas: 2 });
-comprarEntradas({ nombre: "David", entradas: 4 });
-comprarEntradas({ nombre: "Ana", entradas: 3 });
-comprarEntradas({ nombre: "Luis", entradas: 1 });
-comprarEntradas({ nombre: "Sofía", entradas: 2 });
+const delay = ms => new Promise(r => setTimeout(r, ms));
+
+function simularLlegadas(usuarios) {
+// lanza todos los timers en paralelo; cada uno llega tras su delay aleatorio
+    return Promise.all(
+        usuarios.map(async u => {
+            await delay(200 + Math.random() * 2500);
+            comprarEntradas(u);
+        })
+    );
+}
+
+async function startSimulator() {
+    const usuarios = [
+    { nombre: "David", entradas: 4 },
+    { nombre: "Ana", entradas: 3 },
+    { nombre: "Luis", entradas: 5 },
+    { nombre: "Sofía", entradas: 2 },
+    { nombre: "David", entradas: 4 },
+    { nombre: "Ana", entradas: 3 },
+    { nombre: "Luis", entradas: 1 },
+    { nombre: "Sofía", entradas: 2 }
+    ];
+
+    await simularLlegadas(usuarios);
+}
+
+startSimulator();
 
 
 // IVAN WORK
+
+// n entradas
+// peticiones de entradas
+// precesar/disminuir, validar
+//una fila de peticiones
+
+const comprador = { nombre: "Roberto", entradas: 8 };
+
+let queue = [];
+let entradasDisponibles = 10;
+
+function validarUsuario(usuarioAValidar) {
+  if (typeof usuarioAValidar === "string") {
+    console.log("Usuario válido");
+    return true;
+  } else {
+    console.log("Usuario inválido");
+    return false;
+  }
+}
+
+function validarEntradas(entradaAValidar) {
+  if (typeof entradaAValidar === "number" && entradaAValidar >= 0) {
+    console.log("Número válido");
+    return true;
+  } else {
+    console.log("Número inválido");
+    return false;
+  }
+}
+
+function queueRequest() {
+  if (
+    !validarEntradas(comprador.entradas) ||
+    !validarUsuario(comprador.nombre)
+  ) {
+    return false;
+  }
+
+  queue.push(comprador);
+  return true;
+}
+
+function comprarEntrada() {
+  if (!queueRequest()) return;
+
+  if (comprador.entradas <= entradasDisponibles) {
+    console.log("Gracias por la compra");
+    entradasDisponibles -= comprador.entradas;
+  } else {
+    console.log("Stock no disponible");
+  }
+}
+
+console.log("Cola inicial:", queue);
+comprarEntrada();
+console.log("Cola final:", queue);
+console.log("Entradas restantes:", entradasDisponibles);
+
 // ALEX WORK
 // DIEGO WORK
 
