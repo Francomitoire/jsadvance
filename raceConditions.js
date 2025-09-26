@@ -49,7 +49,9 @@ runSimulation()
 
 const Stock = {
     disponibles: 10,
-    get() { return this.disponibles; },
+    get() {
+        return this.disponibles;
+    },
     disminuir(cantidad) {
         if (!Number.isInteger(cantidad) || cantidad <= 0) throw new Error("Cantidad inválida");
         if (cantidad > this.disponibles) throw new Error("Stock insuficiente");
@@ -98,16 +100,34 @@ function comprarEntradas(usuario) {
     setTimeout(procesarCola, Math.random() *2000);
 }
 
-function startSimulator() {
-    comprarEntradas({ nombre: "David", entradas: 4 });
-    comprarEntradas({ nombre: "Ana", entradas: 3 });
-    comprarEntradas({ nombre: "Luis", entradas: 5 });
-    comprarEntradas({ nombre: "Sofía", entradas: 2 });
-    comprarEntradas({ nombre: "David", entradas: 4 });
-    comprarEntradas({ nombre: "Ana", entradas: 3 });
-    comprarEntradas({ nombre: "Luis", entradas: 1 });
-    comprarEntradas({ nombre: "Sofía", entradas: 2 });
+const delay = ms => new Promise(r => setTimeout(r, ms));
+
+function simularLlegadas(usuarios) {
+// lanza todos los timers en paralelo; cada uno llega tras su delay aleatorio
+    return Promise.all(
+        usuarios.map(async u => {
+            await delay(200 + Math.random() * 2500);
+            comprarEntradas(u);
+        })
+    );
 }
+
+async function startSimulator() {
+    const usuarios = [
+    { nombre: "David", entradas: 4 },
+    { nombre: "Ana", entradas: 3 },
+    { nombre: "Luis", entradas: 5 },
+    { nombre: "Sofía", entradas: 2 },
+    { nombre: "David", entradas: 4 },
+    { nombre: "Ana", entradas: 3 },
+    { nombre: "Luis", entradas: 1 },
+    { nombre: "Sofía", entradas: 2 }
+    ];
+
+    await simularLlegadas(usuarios);
+}
+
+startSimulator();
 
 
 // IVAN WORK
