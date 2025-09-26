@@ -1,8 +1,11 @@
+import promptSync from 'prompt-sync';
+const prompt = promptSync();
 // MATI WORK
 function runSimulation(){
     const usuarios = []
     const entradas = []
     const tickets = []
+    let comprarEntradasRestantes;
     for(let i = 1; i <= 15; i++){
         usuarios.push(`ususario${i}`)
         if(i<=10){
@@ -14,20 +17,42 @@ function runSimulation(){
         const promesasEntradas = usuarios.map((usuario)=>{
             return new Promise((resolve, reject)=>{
                 setTimeout(()=>{
-                    if(entradas.length !== 0){
-                        const cantidadEntradas = Math.floor(Math.random() * entradas.length) + 1
+                        let cantidadEntradas = Math.floor(Math.random() * 9) + 1
                         const ticket = {
                             nombre: usuario,
                             entradasUsuario : []
                         }
-                        for(let i = 0; i < cantidadEntradas; i++){
-                            ticket.entradasUsuario.push(entradas.shift())
+                        if(entradas.length!== 0){
+                            if(cantidadEntradas <= entradas.length){
+                                for(let i = 0; i < cantidadEntradas; i++){
+                                    ticket.entradasUsuario.push(entradas.shift())
+                                }
+                                resolve(ticket)
+                            }else{
+                                do{
+                                    try{
+                                        console.log(`Lo siento ${usuario}, no hay suficientes entradas. Si desea comprar entradas igualmente, ingrese cuántas entradas desea comprar. Si no desea comprar ninguna entrada, ingrese 0.`);
+                                        comprarEntradasRestantes = Number(prompt(`(${entradas.length} entradas restantes): `))
+                                        if(comprarEntradasRestantes % 1 !== 0 || comprarEntradasRestantes < 0){
+                                            console.log(`El sistema solo permiten numeros positivos enteros`)
+                                        }
+                                    }catch(error){
+                                        console.log("El sistema solo permite numeros")
+                                    }
+                                }while(typeof comprarEntradasRestantes !== "number" || comprarEntradasRestantes % 1 !== 0 || comprarEntradasRestantes > entradas.length)
+                                cantidadEntradas = comprarEntradasRestantes
+                                if(cantidadEntradas !== 0){
+                                    for(let i = 0; i < cantidadEntradas; i++){
+                                        ticket.entradasUsuario.push(entradas.shift())
+                                    }
+                                    resolve(ticket)
+                                }else{
+                                    reject("Muchas gracias por la visita.")
+                                }
+                            }
+                        }else{
+                            reject(`Lo siento ${usuario}, no quedan entradas`)
                         }
-
-                        resolve(ticket)
-                    }else{
-                        reject(`Lo siento ${usuario}, se han acabado las entradas`)
-                    }
                 }, Math.random() * 5000)
             })
         })
@@ -42,7 +67,7 @@ function runSimulation(){
             })
         })
     }
-    sacarEntradas()
+        sacarEntradas()
 }
 runSimulation()
 // DAVID WORK
